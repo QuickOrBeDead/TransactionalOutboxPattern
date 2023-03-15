@@ -2,12 +2,13 @@
 
 using System.Text.Json;
 
+using MessageQueue.Events;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 using TransactionalOutboxPatternApp.Infrastructure.Data;
 using TransactionalOutboxPatternApp.Infrastructure.Entity;
-using TransactionalOutboxPatternApp.Infrastructure.Events;
 
 public interface IEventLogService
 {

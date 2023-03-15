@@ -1,4 +1,4 @@
-﻿namespace TransactionalOutboxPatternApp.Infrastructure.Events;
+﻿namespace MessageQueue.Events;
 
 public class EventBase
 {
@@ -6,7 +6,7 @@ public class EventBase
 
     public DateTime CreateDate { get; }
 
-    public EventBase()
+    protected EventBase()
     {
         Id = Guid.NewGuid();
         CreateDate = DateTime.Now;
