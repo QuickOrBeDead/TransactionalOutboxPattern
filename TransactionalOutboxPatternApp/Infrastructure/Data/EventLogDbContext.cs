@@ -18,7 +18,7 @@ public class EventLogDbContext : DbContext
         modelBuilder.Entity<EventLogEntry>(ConfigureIntegrationEventLogEntry);
     }
 
-    void ConfigureIntegrationEventLogEntry(EntityTypeBuilder<EventLogEntry> builder)
+    private void ConfigureIntegrationEventLogEntry(EntityTypeBuilder<EventLogEntry> builder)
     {
         builder.ToTable("EventLogEntry");
 
