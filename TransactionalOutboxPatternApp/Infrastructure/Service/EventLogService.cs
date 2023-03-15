@@ -37,6 +37,7 @@ public sealed class EventLogService : IEventLogService
                                     EventId = @event.Id,
                                     CreateDate = @event.CreateDate,
                                     Content = JsonSerializer.Serialize(@event, @event.GetType(), new JsonSerializerOptions { WriteIndented = false }),
+                                    EventTypeName = @event.GetType().FullName,
                                     State = EventLogEntryState.NotPublished
                                 };
         _eventLogDbContext.EventLogEntries.Add(eventLogEntry);

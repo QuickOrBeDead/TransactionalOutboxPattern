@@ -1,20 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿namespace TransactionalOutboxPatternApp.Pages;
+
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace TransactionalOutboxPatternApp.Pages
+using TransactionalOutboxPatternApp.Infrastructure.Service;
+
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    private readonly IOrderService _orderService;
+
+    public int? OrderId { get; private set; }
+
+    public IndexModel(IOrderService orderService)
     {
-        private readonly ILogger<IndexModel> _logger;
+        _orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
+    }
 
-        public IndexModel(ILogger<IndexModel> logger)
-        {
-            _logger = logger;
-        }
+    public void OnGet()
+    {
+    }
 
-        public void OnGet()
-        {
-
-        }
+    public async Task OnPostCreateOrder()
+    {
+        OrderId = await _orderService.CreateOrderAsync();
     }
 }
