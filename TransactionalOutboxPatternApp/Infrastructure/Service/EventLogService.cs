@@ -1,14 +1,17 @@
 ﻿namespace TransactionalOutboxPatternApp.Infrastructure.Service;
 
+using System.Text.Json;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 using TransactionalOutboxPatternApp.Infrastructure.Data;
 using TransactionalOutboxPatternApp.Infrastructure.Entity;
+using TransactionalOutboxPatternApp.Infrastructure.Events;
 
 public interface IEventLogService
 {
-    Task SaveEventLogEntryAsync(EventLogEntry eventLogEntry, IDbContextTransaction transaction);
+    Task SaveEventAsync(EventBase @event, IDbContextTransaction transaction);
 }
 
 public sealed class EventLogService : IEventLogService
@@ -20,7 +23,7 @@ public sealed class EventLogService : IEventLogService
         _eventLogDbContext = eventLogDbContext ?? throw new ArgumentNullException(nameof(eventLogDbContext));
     }
 
-    public Task SaveEventLogEntryAsync(EventLogEntry eventLogEntry, IDbContextTransaction transaction)
+    public Task SaveEventAsync(EventBase @event, IDbContextTransaction transaction)
     {
         if (transaction == null)
         {
@@ -28,6 +31,14 @@ public sealed class EventLogService : IEventLogService
         }
 
         _eventLogDbContext.Database.UseTransaction(transaction.GetDbTransaction());
+       
+        var eventLogEntry = new EventLogEntry
+                                {
+                                    EventId = @event.Id,
+                                    CreateDate = @event.CreateDate,
+                                    Content = JsonSerializer.Serialize(@event, @event.GetType(), new JsonSerializerOptions { WriteIndented = false }),
+                                    State = EventLogEntryState.NotPublished
+                                };
         _eventLogDbContext.EventLogEntries.Add(eventLogEntry);
 
         return _eventLogDbContext.SaveChangesAsync();
