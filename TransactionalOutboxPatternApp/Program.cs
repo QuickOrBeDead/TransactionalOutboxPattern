@@ -9,6 +9,7 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<OrderDbContext>(options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IEventLogService, EventLogService>();
 
 var app = builder.Build();
 

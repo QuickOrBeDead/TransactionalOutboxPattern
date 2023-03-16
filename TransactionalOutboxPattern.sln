@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransactionalOutboxPatternA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageQueue", "MessageQueue\MessageQueue.csproj", "{DD7930E2-B8CD-4040-98AD-7BDB421A88A6}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{24632328-AEF4-473A-A2DC-CE5B398A6744}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{DD7930E2-B8CD-4040-98AD-7BDB421A88A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD7930E2-B8CD-4040-98AD-7BDB421A88A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD7930E2-B8CD-4040-98AD-7BDB421A88A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24632328-AEF4-473A-A2DC-CE5B398A6744}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24632328-AEF4-473A-A2DC-CE5B398A6744}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24632328-AEF4-473A-A2DC-CE5B398A6744}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24632328-AEF4-473A-A2DC-CE5B398A6744}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

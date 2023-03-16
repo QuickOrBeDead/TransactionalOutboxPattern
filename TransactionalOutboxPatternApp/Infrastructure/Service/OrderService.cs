@@ -15,9 +15,12 @@ public sealed class OrderService : IOrderService
 {
     private readonly OrderDbContext _orderDbContext;
 
-    public OrderService(OrderDbContext orderDbContext)
+    private readonly IEventLogService _eventLogService;
+
+    public OrderService(OrderDbContext orderDbContext, IEventLogService eventLogService)
     {
         _orderDbContext = orderDbContext ?? throw new ArgumentNullException(nameof(orderDbContext));
+        _eventLogService = eventLogService ?? throw new ArgumentNullException(nameof(eventLogService));
     }
 
     public async Task<int> CreateOrderAsync()
@@ -32,9 +35,7 @@ public sealed class OrderService : IOrderService
                 await context.Orders.AddAsync(order, cancellationToken).ConfigureAwait(false);
                 await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-                using var eventLogDbContext = new EventLogDbContext(new DbContextOptionsBuilder<EventLogDbContext>().UseSqlServer(_orderDbContext.Database.GetDbConnection()).Options);
-                var eventLogService = new EventLogService(eventLogDbContext);
-                await eventLogService.SaveEventAsync(new OrderCreatedEvent(order.Id), context.Database.CurrentTransaction);
+                await _eventLogService.SaveEventAsync(new OrderCreatedEvent(order.Id));
 
                 return order.Id;
             },

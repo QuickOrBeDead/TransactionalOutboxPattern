@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - 1433:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=mssql1Ipw
+    volumes:
+      - sqldata:/var/opt/sqlserver/data
+  transactionaloutboxpatternapp:
+    image: ${DOCKER_REGISTRY-}transactionaloutboxpatternapp
+    build:
+      context: .
+      dockerfile: TransactionalOutboxPatternApp/Dockerfile
+volumes:
+  sqldata:
+    driver: local

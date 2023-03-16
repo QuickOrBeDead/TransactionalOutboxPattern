@@ -4,35 +4,25 @@ using System.Text.Json;
 
 using MessageQueue.Events;
 
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-
 using TransactionalOutboxPatternApp.Infrastructure.Data;
 using TransactionalOutboxPatternApp.Infrastructure.Entity;
 
 public interface IEventLogService
 {
-    Task SaveEventAsync(EventBase @event, IDbContextTransaction transaction);
+    Task SaveEventAsync(EventBase @event);
 }
 
 public sealed class EventLogService : IEventLogService
 {
-    private readonly EventLogDbContext _eventLogDbContext;
+    private readonly OrderDbContext _orderDbContext;
 
-    public EventLogService(EventLogDbContext eventLogDbContext)
+    public EventLogService(OrderDbContext orderDbContext)
     {
-        _eventLogDbContext = eventLogDbContext ?? throw new ArgumentNullException(nameof(eventLogDbContext));
+        _orderDbContext = orderDbContext ?? throw new ArgumentNullException(nameof(orderDbContext));
     }
 
-    public Task SaveEventAsync(EventBase @event, IDbContextTransaction transaction)
+    public Task SaveEventAsync(EventBase @event)
     {
-        if (transaction == null)
-        {
-            throw new ArgumentNullException(nameof(transaction));
-        }
-
-        _eventLogDbContext.Database.UseTransaction(transaction.GetDbTransaction());
-       
         var eventLogEntry = new EventLogEntry
                                 {
                                     EventId = @event.Id,
@@ -41,8 +31,8 @@ public sealed class EventLogService : IEventLogService
                                     EventTypeName = @event.GetType().FullName,
                                     State = EventLogEntryState.NotPublished
                                 };
-        _eventLogDbContext.EventLogEntries.Add(eventLogEntry);
+        _orderDbContext.EventLogEntries.Add(eventLogEntry);
 
-        return _eventLogDbContext.SaveChangesAsync();
+        return _orderDbContext.SaveChangesAsync();
     }
 }
