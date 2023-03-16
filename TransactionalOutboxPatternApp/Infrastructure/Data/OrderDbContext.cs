@@ -31,6 +31,8 @@ public class OrderDbContext : DbContext
                     builder.ToTable("EventLogEntry");
                     builder.HasKey(e => e.EventId);
                     builder.Property(e => e.EventId).IsRequired();
+                    builder.Property(e => e.TransactionId).IsRequired();
+                    builder.HasIndex(e => e.TransactionId).IsUnique();
                     builder.Property(e => e.Content).IsRequired();
                     builder.Property(e => e.CreateDate).IsRequired();
                     builder.Property(e => e.State).IsRequired();

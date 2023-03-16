@@ -200,7 +200,7 @@ public class RabbitMqMessageQueueConsumerService<TEvent> : RabbitMqGenericMessag
 
     private static RabbitMqConsumerSettings SetExchangeName(RabbitMqConsumerSettings settings)
     {
-        settings.Exchanges = new List<string> {EventNameAttribute.GetEventName<TEvent>()};
+        settings.Exchanges = new List<string> {EventNameAttribute.GetEventName(typeof(TEvent))};
         return settings;
     }
 }

@@ -2,7 +2,8 @@
 
 using MessageQueue.Events;
 
-public class OrderCreatedEvent : EventBase
+[EventName("Order.OrderCreated")]
+public sealed class OrderCreatedEvent : EventBase
 {
     public int OrderId { get; }
 

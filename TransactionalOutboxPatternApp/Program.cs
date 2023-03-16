@@ -1,3 +1,4 @@
+using MessageQueue;
 using Microsoft.EntityFrameworkCore;
 using TransactionalOutboxPatternApp.Infrastructure.Data;
 using TransactionalOutboxPatternApp.Infrastructure.Service;
@@ -8,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<OrderDbContext>(options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
+builder.Services.AddSingleton<IRabbitMqConnection>(_ => new DefaultRabbitMqConnection(builder.Configuration.GetSection("RabbitMqConnection").Get<RabbitMqConnectionSettings>()));
+builder.Services.AddSingleton<IMessageQueuePublisherService, RabbitMqMessageQueuePublisherService>();
+
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IEventLogService, EventLogService>();
 

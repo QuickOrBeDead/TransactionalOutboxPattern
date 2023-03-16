@@ -33,7 +33,7 @@ public class RabbitMqMessageQueuePublisherService : IMessageQueuePublisherServic
 
         using var channel = _connection.CreateChannel();
 
-        var eventName = EventNameAttribute.GetEventName<TEvent>();
+        var eventName = EventNameAttribute.GetEventName(@event.GetType());
         channel.ExchangeDeclare(eventName, "fanout", true, false, null);
 
         var properties = channel.CreateBasicProperties();

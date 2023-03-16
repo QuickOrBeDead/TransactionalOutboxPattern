@@ -10,6 +10,16 @@ services:
       - SA_PASSWORD=mssql1Ipw
     volumes:
       - sqldata:/var/opt/sqlserver/data
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    restart: always
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+
   transactionaloutboxpatternapp:
     image: ${DOCKER_REGISTRY-}transactionaloutboxpatternapp
     build:
@@ -17,4 +27,6 @@ services:
       dockerfile: TransactionalOutboxPatternApp/Dockerfile
 volumes:
   sqldata:
+    driver: local
+  rabbitmq:
     driver: local

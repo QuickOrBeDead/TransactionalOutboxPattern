@@ -17,13 +17,12 @@ public sealed class EventNameAttribute : Attribute
         Name = name;
     }
 
-    public static string GetEventName<TEvent>()
-        where TEvent : EventBase
+    public static string GetEventName(Type type)
     {
-        var eventNameAttribute = typeof(TEvent).GetCustomAttribute<EventNameAttribute>();
+        var eventNameAttribute = type.GetCustomAttribute<EventNameAttribute>();
         if (eventNameAttribute == null)
         {
-            throw new InvalidOperationException($"EventNameAttribute is required for event type {typeof(TEvent)}");
+            throw new InvalidOperationException($"EventNameAttribute is required for event type {typeof(Type)}");
         }
 
         return eventNameAttribute.Name;
