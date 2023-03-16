@@ -33,7 +33,8 @@ public class RabbitMqMessageQueuePublisherService : IMessageQueuePublisherServic
 
         using var channel = _connection.CreateChannel();
 
-        var eventName = EventNameAttribute.GetEventName(@event.GetType());
+        var eventType = @event.GetType();
+        var eventName = EventNameAttribute.GetEventName(eventType);
         channel.ExchangeDeclare(eventName, "fanout", true, false, null);
 
         var properties = channel.CreateBasicProperties();
@@ -43,6 +44,6 @@ public class RabbitMqMessageQueuePublisherService : IMessageQueuePublisherServic
             eventName,
             string.Empty,
             properties,
-            Encoding.UTF8.GetBytes(JsonSerializer.Serialize(@event)));
+            Encoding.UTF8.GetBytes(JsonSerializer.Serialize(@event, eventType)));
     }
 }
